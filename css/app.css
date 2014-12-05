@@ -1,0 +1,19 @@
+#geq{
+  width: 100%;
+}
+
+#cover{
+  height: 48px;
+}
+
+.icon.play:before{
+  content: "＞";
+}
+
+.icon.pause:before{
+  content: "□";
+}
+
+.icon.music:before{
+  content: "♪";
+}

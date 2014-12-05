@@ -1,0 +1,14 @@
+{
+  "launch_path": "/index.html",
+  "name": "WebAudio API Demo",
+  "version": "1.0",
+  "description": "A demo",
+  "icons":{
+    "128": "img/icon/icon.png"
+  },
+  "developer": {
+    "name": "N.Shimizu",
+    "url": "http://chikoski.info/"
+  },
+  "default_locale": "ja"
+}
