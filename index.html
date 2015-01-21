@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>App Framework</title>
+    <title>Audio Efectr</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/af.ui.css">
@@ -37,6 +37,28 @@
             <option>peaking</option>
             <option>notch</option>
           </select>
+
+          <div class="toggle">
+            <label>自動再生</label>
+            <input id="autoplay" checked="" name="autoplay" value="1" class="toggle" type="checkbox">
+            <label for="autoplay" data-on="On" data-off="Off">
+              <span></span>
+            </label>
+          </div>
+          <div class="toggle">
+            <label>ループ再生</label>
+            <input id="loop" checked="" name="loop" value="1" class="toggle" type="checkbox">
+            <label for="loop" data-on="On" data-off="Off">
+              <span></span>
+            </label>     
+          </div>
+          <div class="toggle">
+            <label>波形表示</label>
+            <input id="visualize" checked="" name="loop" value="1" class="toggle" type="checkbox">
+            <label for="visualize" data-on="On" data-off="Off">
+              <span></span>
+            </label>     
+          </div>               
           <footer>
             <a id="play" class="icon play">再生</a>
             <a id="pause" class="icon pause">停止</a>
