@@ -1,10 +1,13 @@
 {
   "launch_path": "/index.html",
-  "name": "WebAudio API Demo",
-  "version": "1.0",
-  "description": "A demo",
+  "name": "audio efectr",
+  "version": "0.1",
+  "description": "We can apply some filters like low pass filter, high pass filter, reverb, etc bwhen we listen musics.",
   "icons":{
-    "128": "img/icon/icon.png"
+    "128": "/img/icon/icon128x128.png",
+    "60": "/img/icon/icon60x60.png",
+    "48": "/img/icon/icon48x48.png",
+    "16": "/img/icon/icon16x16.png"
   },
   "developer": {
     "name": "N.Shimizu",

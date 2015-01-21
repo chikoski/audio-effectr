@@ -3,14 +3,15 @@
   var app;
   var audioContext;
   var graphicContext;
-
+  
   var MAXQ  = 30;
-
+  var BAR_WIDTH = 8;
+  
   var playMusic = function(){
     console.log("play");
     app.els.player.play();
   };
-
+  
   var pauseMusic = function(){
     console.log("pause");
     app.els.player.pause();
@@ -19,10 +20,10 @@
   var setMusic = function(){
     console.log("changing music");
     var music = this.result;
-    console.log(music);
     app.els.player.src = window.URL.createObjectURL(music.blob);
     app.els.title.textContent = music.metadata.title;
     app.els.cover.src = window.URL.createObjectURL(music.metadata.picture);
+    app.coverImage = app.els.cover;
   };
 
   var selectMusic = function(){
@@ -71,11 +72,16 @@
     };
   };
 
-  var update = function(){
-    fade();
+  var drawCoverImage = function(){
+    if(app.coverImage != null){
+      app.contexts.graphics.drawImage(app.coverImage, 0, 0, app.els.geq.width, app.els.geq.height);
+    }
+  };
+
+  var drawGraphicEqualiser = function(){
     app.nodes.analyser.getByteFrequencyData(app.fft);
     app.contexts.graphics.beginPath();
-    for(var i = 0; i < app.fft.length; i++){
+    for(var i = 0; i < app.fft.length; i = i + BAR_WIDTH){
       var pos = calcPositionFromFFTData(i);
       if(i == 0){
         app.contexts.graphics.moveTo(pos.x, pos.y);
@@ -84,24 +90,62 @@
       }
     }
     app.contexts.graphics.stroke();
+  };
+
+  var update = function(){
+    fade();
+    drawCoverImage();
+    drawGraphicEqualiser();
     window.requestAnimationFrame(update);
   };
 
   var normalizeGEQPosition = function(value, max){
     return Math.min(1.0, value / max);
-  };  
+  };
+
+  var isTouchEvent =  function(event){
+    return event.touches && event.touches.length > 0;
+  };
+
+  var lastPosition = function(event){
+    var lastPosition = event;
+    if(isTouchEvent(event)){
+      lastPosition = event.touches[event.touches.length - 1];
+    }
+    return lastPosition;
+  };
+
+  var extractPosition = function(event){
+    var position = lastPosition(event);
+    return {
+      x: position.clientX,
+      y: position.clientY
+    };
+  };
 
   var calcNormalizedPositionInGEQ = function(event){
-    return {x: normalizeGEQPosition(event.clientX - event.target.offsetLeft, app.els.geq.clientWidth),
-            y : 1.0 - normalizeGEQPosition(event.clientY - event.target.offsetTop, app.els.geq.clientHeight)};
+    var position = extractPosition(event);
+    return {x: normalizeGEQPosition(position.x - event.target.offsetLeft, app.els.geq.clientWidth),
+            y : 1.0 - normalizeGEQPosition(position.y - event.target.offsetTop, app.els.geq.clientHeight)};
   };  
 
+  var formatFilterParameter = function(value){
+    var rounded = Math.floor(value * 100);
+    var postfix = "";
+    if(rounded % 100 == 0){
+      postfix = ".00";
+    }else if(rounded % 10 == 0){
+      postfix = "0";
+    }
+    return rounded / 100 + postfix;
+  };
+
   var displayFrequency = function(){
-    app.els.frequency.textContent = app.nodes.filter.frequency.value;
+    app.els.frequency.textContent = formatFilterParameter(app.nodes.filter.frequency.value);
   };
 
   var displayQ = function(){
-    app.els.Q.textContent = app.nodes.filter.Q.value;
+    app.els.Q.textContent = formatFilterParameter(app.nodes.filter.Q.value);
   };
 
   var displayFilterParameters = function(){
@@ -117,9 +161,10 @@
   };
 
   var boot = function(){
+    console.log("app boot");
     app = {
       els:{
-        player: document.querySelector("#player"),
+        player: document.querySelector("#audio-source"),
         play: document.querySelector("#play"),
         pause: document.querySelector("#pause"),
         select: document.querySelector("#select"),
@@ -140,7 +185,8 @@
         source: null,
         destination: null
       },
-      fft: null
+      fft: null,
+      coverImage: null
     };
 
     app.contexts.graphics = app.els.geq.getContext("2d");
@@ -153,6 +199,7 @@
     app.els.filters.addEventListener("change", changeFilter);
 
     app.els.geq.addEventListener("mousemove", changeFilterParameter);
+    app.els.geq.addEventListener("touchmove", changeFilterParameter);
 
     displayFilterParameters();
 

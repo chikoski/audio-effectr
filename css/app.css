@@ -1,11 +1,23 @@
-#geq{
-  width: 100%;
+#afui select,
+#afui textarea,
+#afui input[type="text"],
+#afui input[type=search],
+#afui input[type="password"],
+#afui input[type="datetime"],
+#afui input[type="datetime-local"],
+#afui input[type="date"],
+#afui input[type="month"],
+#afui input[type="time"],
+#afui input[type="week"],
+#afui input[type="number"],
+#afui input[type="email"],
+#afui input[type="url"],
+#afui input[type="tel"],
+#afui input[type="color"],
+#afui .input-group {
+  color: inherit;
+  background-color: inherit;
 }
-
-#cover{
-  height: 48px;
-}
-
 .icon.play:before{
   content: "＞";
 }
@@ -16,4 +28,35 @@
 
 .icon.music:before{
   content: "♪";
+}
+#player{
+  position: relative;
+}
+#geq{
+  width: 100%;
+}
+#music{
+  font-size: 140%;
+  padding: 10px 0 5px 10px;
+}
+#filter-parameters{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  color: white;
+  background-color: rgba(0, 0, 0, .8);
+  overflow: hidden;
+  padding: 10px 0;
+}
+#frequency:before{
+  content: "Hz: ";
+}
+#Q:before{
+  content: "Q: ";
+}
+#cover{
+  height: 40px;
+  margin-right: 10px; 
+  display: none;
 }
