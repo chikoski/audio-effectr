@@ -4,7 +4,7 @@
   var audioContext;
   var graphicContext;
   
-  var MAXQ  = 30;
+  var MAXQ  = 6;
   var BAR_WIDTH = 8;
   
   var playMusic = function(){
@@ -95,7 +95,9 @@
   var update = function(){
     fade();
     drawCoverImage();
-    drawGraphicEqualiser();
+    if(app.settings.visualize){
+      drawGraphicEqualiser();
+    }
     window.requestAnimationFrame(update);
   };
 
@@ -160,6 +162,37 @@
     displayFilterParameters();
   };
 
+  var setAutoPlayMode = function(enabled){
+    if(enabled){
+      app.els.player.autoplay = true;
+    }else{
+      app.els.player.autoplay = null;
+    }
+  };
+  var setLoopMode = function(enabled){
+    app.els.player.loop = app.settings.loop;
+  };
+
+  var updateAutoPlayMode = function(){
+    setAutoPlayMode(app.settings.autoplay);
+  };
+  
+  var updateLoopMode = function(enabled){
+    setLoopMode(app.settings.loop);
+  };  
+  
+  var toggleAutoPlay = function(event){
+    app.settings.autoplay = !(app.settings.autoplay);
+    updateAutoPlayMode();
+  };
+  var toggleLoop = function(event){
+    app.settings.loop = !(app.settings.loop);
+    updateLoopMode();
+  };  
+  var toggleVisualize = function(event){
+    app.settings.visualize = !(app.settings.visualize);
+  };
+
   var boot = function(){
     console.log("app boot");
     app = {
@@ -173,7 +206,12 @@
         frequency: document.querySelector("#frequency"),
         Q: document.querySelector("#Q"),
         title: document.querySelector("#title"),
-        cover: document.querySelector("#cover")
+        cover: document.querySelector("#cover"),
+        toggle: {
+          autoplay: document.querySelector("#autoplay"),
+          loop: document.querySelector("#loop"),
+          visualize: document.querySelector("#visualize")
+        }
       },
       contexts:{
         audio: new AudioContext(),
@@ -186,7 +224,12 @@
         destination: null
       },
       fft: null,
-      coverImage: null
+      coverImage: null,
+      settings:{
+        autoplay: true,
+        loop: true,
+        visualize: true
+      }
     };
 
     app.contexts.graphics = app.els.geq.getContext("2d");
@@ -201,10 +244,17 @@
     app.els.geq.addEventListener("mousemove", changeFilterParameter);
     app.els.geq.addEventListener("touchmove", changeFilterParameter);
 
+    app.els.toggle.autoplay.addEventListener("change", toggleAutoPlay);
+    app.els.toggle.loop.addEventListener("change", toggleLoop);
+    app.els.toggle.visualize.addEventListener("change", toggleVisualize);
+
     displayFilterParameters();
 
+    updateAutoPlayMode();
+    updateLoopMode();
+    
     update();
   };
-
+  
   window.addEventListener("load", boot);
 })();

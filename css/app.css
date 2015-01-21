@@ -29,6 +29,11 @@
 .icon.music:before{
   content: "♪";
 }
+
+.toggle{
+  clear: both;
+}
+
 #player{
   position: relative;
 }
