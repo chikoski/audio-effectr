@@ -1,7 +1,7 @@
 {
   "launch_path": "/index.html",
   "name": "audio effectr",
-  "version": "0.1",
+  "version": "0.2",
   "description": "We can apply some filters like low pass filter, high pass filter, reverb, etc bwhen we listen musics.",
   "icons":{
     "128": "/img/icon/icon128x128.png",
