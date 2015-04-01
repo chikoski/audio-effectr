@@ -1,12 +1,14 @@
 (function(){
 
+  const MAXQ  = 6;
+  const BAR_WIDTH = 8;
+  const AUDIO_CHANNEL = "content";
+
   var app;
   var audioContext;
   var graphicContext;
   
-  var MAXQ  = 6;
-  var BAR_WIDTH = 8;
-  
+ 
   var playMusic = function(){
     console.log("play");
     app.els.player.play();
@@ -39,6 +41,22 @@
 
   var changeFilter = function(){
     app.nodes.filter.type = app.els.filters.value;
+  };
+
+  var initAudioChannel = function(){
+    if(navigator.mozAudioChannelManager){
+      navigator.mozAudioChannelManager.volumenControlChannel = AUDIO_CHANNEL;
+      app.contexts.audio = new AudioContext(AUDIO_CHANNEL);
+      app.els.player.mozAudioChannelType = AUDIO_CHANNEL;
+
+      navigator.mozAudioChannelManager.onheadphoneschange = () => {
+        if(!navigator.mozAudioChannelManager.headphones){
+          pauseMusic();
+        }
+      };
+    }else{
+      app.contexts.audio = new AudioContext();
+    }
   };
 
   var initNodes = function(){
@@ -214,7 +232,7 @@
         }
       },
       contexts:{
-        audio: new AudioContext(),
+        audio: null,
         graphics: null
       },
       nodes: {
@@ -234,6 +252,7 @@
 
     app.contexts.graphics = app.els.geq.getContext("2d");
 
+    initAudioChannel();
     initNodes();
 
     app.els.play.addEventListener("click", playMusic);

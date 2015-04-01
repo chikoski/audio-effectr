@@ -13,5 +13,10 @@
     "name": "N.Shimizu",
     "url": "http://chikoski.info/"
   },
+  "permissions": {
+    "audio-channel-content": {
+      "description": "To play music when this app goes background"
+    }
+  },
   "default_locale": "ja"
 }
