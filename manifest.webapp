@@ -1,9 +1,10 @@
 {
   "launch_path": "/index.html",
   "name": "audio effectr",
-  "version": "0.2",
+  "version": "0.3",
   "description": "We can apply some filters like low pass filter, high pass filter, reverb, etc bwhen we listen musics.",
   "icons":{
+    "512": "/img/icon/icon512x512.png",
     "128": "/img/icon/icon128x128.png",
     "60": "/img/icon/icon60x60.png",
     "48": "/img/icon/icon48x48.png",
@@ -12,6 +13,11 @@
   "developer": {
     "name": "N.Shimizu",
     "url": "http://chikoski.info/"
+  },
+  "permissions": {
+    "audio-channel-content": {
+      "description": "To play music when this app goes background"
+    }
   },
   "default_locale": "ja"
 }
